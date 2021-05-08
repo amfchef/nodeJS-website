@@ -1,0 +1,38 @@
+● What kind of history can you use as a tool with Jenkins?
+The biggest advantage of Jenkins is that you can see your previous builts. Which is the testings of your softwares/application. There is an
+output log of the builds, and if something fails. You will see what went wrong, therefore; you can easily fix the issues. 
+
+● What kind of history can you use as a tool with Git?
+Git is a version control tool, we use together with Jenkins. With Git you can see, prevous commits to the project. You can see the whole 
+history from the project/repository.
+
+● What is a Pipeline in Jenkins?
+Pipeline is a plugins/feauture you have with Jenkins. Pipeline supports integration and implementation of continous delivery pipelines.
+Pipeline is a group of events, which you can add syntax and scripts to, this will make it easier to, create step by step process.
+
+● Describe what Jenkins is, and similar tools like Jenkins?
+Jenkins is a free and open source automation server. It helps to automate softwares, develop builts, testings and deploy. We can call it
+CI/CD toolkit for DepOps.You can run servlet containers, for example Apache Tomcat. It supports version controll tools, like Git, AccuRev,
+CVS, RTC, etc.
+Builts can be triggered, when a commit from a Git webhook has occured.
+similar tools like Jenkins are:
+1. Cruise Control
+2. CircleCI
+3. Shippable
+4. Travis CI
+5. GitLab CI/CD
+
+● Describe what Ansible is, and simular tools like Ansible?
+Ansible is an IT automation engine that automates cloud provisioning, configuration management, application deployment, 
+intra-service orchestration, and many other IT needs.
+Ansible helps your IT infrastructure by describing how all of your systems inter-relate, rather than just managing one system 
+at a time. You can playbooks which is normally written in YML, which describs your jobs and what ansible will do with your project. 
+YML is a key-value laungage which describes data.
+Ansible uses modules (small jobs), and  executes these modules, over a SSH conection (by default). Thanks to the SSH-keys, 
+your project can remain highly secured.
+Similar tools like Ansible:
+1. Puppet Labs
+2. AWS CloudFormation
+3. Docker
+4. Kubernetes
+5. SaltStack

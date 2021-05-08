@@ -1,0 +1,89 @@
+Part 1
+Ansible mot en webbserver
+Sätt upp ett Ansible-projekt som du använder för att direkt deploya ut en webbserver.
+Vad för webbsida du servrar på webbservern spelar ingen roll.
+(Jenkins är inte inblandat här)
+Programmet som ska deployas ut på servern är Lighthttpd:
+https://cloudwafer.com/blog/installing-lighttpd-web-server-on-debian-9/
+Dokumentera hur du gjort och hur du tänkt.
+
+Ansible connects to a webserver:
+Create and connect an Ansible-project to deploy to a webserver. Jenkins is not involved in this. You will use Lighttpd to deploy to your server.
+Document every step.
+
+Create two servers from DigitalOcean, one is for the website, and the other one for Jenkins
+I also created an UbuntuVM for Ansible.
+
+Install Ansible:
+su #login as root
+apt update
+echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" |tee -a /etc/apt/sources.list
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
+apt update
+apt install ansible -y
+
+Generate SSH-keys:
+ssh-keygen -t rsa -b 4096 -C "Ansible@UbuntuVM"
+# The private and public key will be created. You need to add the public key to the webserver's "authorized_key" file. 
+
+Create your project, with a run.sh file, playbooks/lighttpd.yaml, site/index.html and inventory.yaml with the approporite script and
+data. The lighttpd file will install lighttpd and copy the index.html file to the webserver, when launched.
+Please see the files, I created.
+
+Change the permissions of the run.sh file
+chmod +x run.sh
+
+create a Git repo, and make a first commit, make sure, that you add your SSH-key to Git when you commit.
+git init 
+git add --add 
+git commit -m "first commit"
+git push --set-upstream origin
+
+./run.sh #run the "run.sh" file up make sure the website is published, and is connected to the server properly.
+
+Part 2
+Jenkins to a webserver
+Use the prevous Ansible project to deploy your Jenkins server to your webserver. The jenkins server will automate deploy to your 
+webiste server, together with Ansible, with a webhook.
+Github, Jenkins mot en webbserver:
+
+Open the second server
+Install Jenkins:
+# You need java-jdk for the package 
+apt install default-jdk
+# Jenkins
+wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
+sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+sudo apt update
+sudo apt install jenkins -y
+
+su jenkins #login in as jenkins admin
+ssh-keygen -t rsa -b 4096 -C "Jenkins@server" #generating a SSH-key
+#copy the "id_rsa.pub" key from the jenkins server into the webserver's folder, "authorized_keys"
+
+#Connect to the Jenkins server port http://161.35.110.181:8080 (this is my Ip-address)
+#create an account, enter your details
+#find a password from your Jenkins server:
+cat /var/lib/jenkins/secrets/initialAdminPassword
+#Enter the secret password to the GUI Jenkins platform
+#Install Jenkins on your webrowser
+
+#Create a "new item" from the GUI Jenkins platform
+#Enter Freestyle project, and choose a name
+#On source code management; add the git repo link, with the SSH connection.
+#Add credentials, choose SSH-key, enter manually:
+#Here you need to copy the private-key from your Jenkins server
+cat /var/lib/jenkins/.ssh/id_rsa #copy the output and paste in to the Jenkins GUI webbrowser
+
+#create a webhook:
+#Go back to your repo on Github and choose settings/webhooks/add webhook
+#on payload URL, you need to enter "http://161.35.110.181:8080(myJenkinsServer)/github-webhook/"
+#content type = application/JSON
+
+#Go back to Jenkins GUI (Built), and tick the "github hook trigger".
+#add excute shell script
+./run.sh #this is the file, the build needs to start, so the developer doesnt need to enter a shell command everytime we need a new build
+#click "Build now"
+#try to access the website's ip address to see if it works.
+#ENJOY THE WEBSITE
+

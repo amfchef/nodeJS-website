@@ -1,0 +1,24 @@
+- hosts: web
+  become: yes
+  tasks:
+    - name: "update"
+      apt: 
+        update_cache: yes
+        cache_valid_time: 3600
+    - name: "Install apache"
+      apt: 
+        name: ['apache2']
+        state: latest
+      
+    - name: "create www directory for apache"
+      file:
+        path: /var/www/html
+        state: directory
+        mode: '0775'
+        owner: www-data
+        group: www-data
+
+    - name: "copy file to correct path"
+      copy:
+        src: ../site/index.html
+        dest: /var/www/html
