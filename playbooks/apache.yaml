@@ -22,3 +22,9 @@
       copy:
         src: ../site/index.html
         dest: /var/www/html
+    
+    - name: "copy contact to correct path"
+      copy:
+        src: /home/jakob/Desktop/Ansible/site/contact.html
+        dest: /var/www/html
+        #/var/www/html/contact.html
